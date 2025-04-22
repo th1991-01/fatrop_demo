@@ -142,6 +142,7 @@ options["equality"] = equality
 
 solver = ca.nlpsol('solver',"fatrop",nlp,options)
 
+
 res = solver(x0 = ca.vcat(x0),
     lbg = ca.vcat(lbg),
     ubg = ca.vcat(ubg),
@@ -149,4 +150,22 @@ res = solver(x0 = ca.vcat(x0),
     ubx = ca.vcat(ubx),
     p = ca.vcat(p_val)
 )
+
+import os
+cname = solver.generate_dependencies("nlp.c") 
+
+oname_O3 = "nlp.so"
+cmd = "gcc -fPIC -shared " + cname  + " -o3 " + " -o " + oname_O3
+print("cmd:", cmd)
+os.system(cmd)
+
+solver_sample_O3 = ca.nlpsol("solver", "fatrop", "./"+oname_O3)
+res_O3 = solver_sample_O3(x0 = ca.vcat(x0),
+    lbg = ca.vcat(lbg),
+    ubg = ca.vcat(ubg),
+    lbx = ca.vcat(lbx),
+    ubx = ca.vcat(ubx),
+    p = ca.vcat(p_val)
+)
+print("res_O3:\n",res_O3)
 
