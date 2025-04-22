@@ -151,6 +151,13 @@ res = solver(x0 = ca.vcat(x0),
     p = ca.vcat(p_val)
 )
 
+print("x0:\n",ca.vcat(x0))
+print("lbg:\n",ca.vcat(lbg))
+print("ubg:\n",ca.vcat(ubg))
+print("lbx:\n",ca.vcat(lbx))
+print("ubx:\n",ca.vcat(ubx))
+print("p:\n",ca.vcat(p_val))
+
 import os
 cname = solver.generate_dependencies("nlp.c") 
 
